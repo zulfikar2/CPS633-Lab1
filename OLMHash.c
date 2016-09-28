@@ -19,6 +19,7 @@ int main() {
 	char search[MAX_LENGTH];
 	int userLength = 1;
 	int tries = 0;
+	int found = 0;
 	//fprintf(data, "username : password\n");
 	//printf("%s\n", passHash);    PRINT GIVEN
 	
@@ -50,7 +51,15 @@ int main() {
 				username[x] = buffer[x];
 				username[x+1] = '\0';
 			}
-			printf("%s%s\n", username, " found in database");
+			//printf("%s%s\n", username, " found in database");
+			
+			//ask for old password and then hash it and check it against database
+			//If the hashes match, the user is prompted for a new
+			//password. The hash of the new password then replaces that of
+			//the old password
+		}
+		else {
+			//add username/pass in database
 		}
 	}
 	
