@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LENGTH 32
+#define MAX_USERNAME_LENGTH 32
 #define MAX_TRIES 3
 #define MAX_PASS_LENGTH 13
 
@@ -16,8 +16,8 @@ int main() {
 		return -1;
 	}
 
-	char username[MAX_LENGTH];
-	char passHash[MAX_LENGTH];
+	char username[MAX_USERNAME_LENGTH];
+	char passHash[MAX_PASS_LENGTH];
 	char buffer[MAX_LENGTH];
 	char search[MAX_LENGTH];
 	char *ret;
@@ -29,7 +29,7 @@ int main() {
 
 	while(userLength == 1) {
 		printf("Please give user thx\n");
-		printf("tries: %d ",tries);
+		//printf("tries: %d ",tries);
 		scanf("%s", search);
 		for(userLength=0; search[userLength]!='\0'; userLength++);
 		if(userLength < 4 || userLength > MAX_LENGTH)
@@ -92,10 +92,27 @@ int main() {
 	fclose(data);
 	return 0;
 }
+char* getUser() {
+	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	int userlength = 0;
+	printf("Please give user thx\n");
+	scanf("%s", username);
+	
+	userlength = strlen(userLength);
+	
+	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
+		fprintf(stderr,"Invalid username length\n");
+		free(username);
+		return 0;
+	}
+}
+
+
+
 char* hashIt(char* pass, int length) {
-	char* hashed = malloc(sizeof(char) * length);
+	char* hashed = calloc(sizeof(char) * length);
 	for(int i = 0; pass[i] != '\0'; i++)
-		E(&pass[i], &hashed[i]);
+		E(&pass[4*i], &hashed[4*i]);
 	return hashed;
 }
 /********************* E function *************************/
