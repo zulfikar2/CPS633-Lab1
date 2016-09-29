@@ -98,15 +98,32 @@ char* getUser() {
 	printf("Please give user thx\n");
 	scanf("%s", username);
 	
-	userlength = strlen(userLength);
+	userlength = strlen(username);
 	
 	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
 		fprintf(stderr,"Invalid username length\n");
 		free(username);
 		return 0;
 	}
+	return username;
+	} 
 }
 
+char* getPass() {
+	char* password = char*)calloc(MAX_PASS_LENGTH, sizeof(char));
+	int passlength = 0;
+	printf("User not found, enter password for username:\n");
+	scanf("%s", password);
+	passlength = strlen(password);
+	if(passlength > MAX_PASS_LENGTH) {
+		for(int passlength; passlength > MAX_PASS_LENGTH; passlength--)
+		{
+			password[passlength] = '\0';
+		}
+		return password;
+	}
+	return password;	
+}
 
 
 char* hashIt(char* pass, int length) {
