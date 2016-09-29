@@ -54,20 +54,30 @@ int main() {
 			ret=strstr(buffer,search); //store line from buffer
 			//printf("Username is: %s",ret); //doesnt search so far. prints out whole file.
 			for(int x = 0; x < MAX_LENGTH; x++) {
-				if(ret[x] == ':') //stop right before password
+				if(ret[x] == ':')  {
+					int index = 0;
+					for(int y = x+1; y < MAX_PASS_LENGTH + x; y++) {
+						if(ret[y] == '\0')
+							break;
+						passHash[index] = ret[y];
+						passHash[index+1] = '\0';
+						index++;
+					}
 					break;
+				}
 				username[x] = ret[x];
 				username[x+1] = '\0';
 			}
+			
 			printf("%s%s\n", username, " found in database");
+			printf("%s%s\n", passHash, " found in database");
 		}
-
 
 			//ask for old password and then hash it and check it against database
 			//If the hashes match, the user is prompted for a new
 			//password. The hash of the new password then replaces that of
 			//the old password
-		}
+	}
 		 //if user doesnt exist add username
                 if((strstr(buffer, search))== NULL && userFlag==0){ //searched username doesnt exist. but buffer still runs
                     printf("Username doesn't exist. Username created.\n");
@@ -78,16 +88,7 @@ int main() {
                     fprintf(data, "%s:%s\n",search,pass);
                     //write new user and pass into database
                     //write(data,)
-
-
-
                 }
-
-
-
-
-
-
 	fclose(data);
 	return 0;
 }

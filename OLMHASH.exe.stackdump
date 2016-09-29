@@ -1,0 +1,7 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=611478C0
+eax=0061C9B4 ebx=00610049 ecx=00000001 edx=00610049 esi=0061D51C edi=611478A0
+ebp=6119F8C0 esp=0061C8FC program=C:\Users\Zulfikar\Desktop\School\CPS633\Lab1\OLMHASH.exe, pid 7084, thread main
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+End of stack trace
