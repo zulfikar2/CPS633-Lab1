@@ -6,6 +6,8 @@
 #define MAX_TRIES 3
 #define MAX_PASS_LENGTH 13
 
+void E(char *in, char *out);
+
 int main() {
 	FILE* data;
 	data = fopen("userData.txt", "r+");
@@ -21,7 +23,6 @@ int main() {
 	char *ret;
 	int userLength = 1;
 	int tries = 0;
-	int found = 0;
 	int userFlag=0; // 0 for new user 1 for registered user
 	//fprintf(data, "username : password\n");
 	//printf("%s\n", passHash);    PRINT GIVEN
@@ -89,4 +90,21 @@ int main() {
 
 	fclose(data);
 	return 0;
+}
+char* hashIt(char* pass, int length) {
+	char* hashed = malloc(sizeof(char) * length);
+	for(int i = 0; pass[i] != '\0'; i++)
+		E(&pass[i], &hashed[i]);
+	return hashed;
+}
+/********************* E function *************************/
+// DES replacement cipher
+// The function E takes 4 bytes from *in as input and
+// writes 4 bytes to *out
+void E(char *in, char *out)
+{
+out[0]=(in[0]&0x80)^(((in[0]>>1)&0x7F)^((in[0])&0x7F));
+out[1]=((in[1]&0x80)^((in[0]<<7)&0x80))^(((in[1]>>1)&0x7F)^((in[1])&0x7F));
+out[2]=((in[2]&0x80)^((in[1]<<7)&0x80))^(((in[2]>>1)&0x7F)^((in[2])&0x7F));
+out[3]=((in[3]&0x80)^((in[2]<<7)&0x80))^(((in[3]>>1)&0x7F)^((in[3])&0x7F));
 }
