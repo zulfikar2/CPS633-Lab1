@@ -7,8 +7,8 @@
 #define MAX_USERNAME_LENGTH 33
 #define MAX_USERS 50
 
-char Userdata[MAX_USERS][MAX_USERNAME_LENGTH];
-char Passdata[MAX_USERS][MAX_PASS_LENGTH];
+char userData[MAX_USERS][MAX_USERNAME_LENGTH];
+char passData[MAX_USERS][MAX_PASS_LENGTH];
 
 void E(char *in, char *out);
 int initData();
@@ -18,66 +18,24 @@ int compare(char* username);
 char* hashIt(char* pass, int length);
 
 int main() {
-	/*FILE* data;
-	data = fopen("userData.txt", "r+");
-	if(!data) {
-		fprintf(stderr, "Error opening userData.txt");
-		return -1;
-	}*/
-
-	/*char username[MAX_USERNAME_LENGTH];
-
-	char passHash[MAX_PASS_LENGTH];
-	char buffer[MAX_USERNAME_LENGTH];
-	char search[MAX_USERNAME_LENGTH];
-	char *ret;
-	int userLength = 1;
-	int tries = 0;
-	int userFlag=0; // 0 for new user 1 for registered user
-	//fprintf(data, "username : password\n");
-	//printf("%s\n", passHash);    PRINT GIVEN*/
-
+	
+	//initialize userData and passData arrays.
 	initData();
 
 	//char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	
+	//Initialize data
 	char* username =0;
 	char* password=(char*)calloc(MAX_PASS_LENGTH, sizeof(char));
 	int tries = 0;
 
-	while(1) {
-            while(username==0){
-                    username = getUser();
-                    printf("%s",username);
-		            if(username == "-1")
-			               tries++;
-                    if(tries >= MAX_TRIES) {
-                    //ends program when max tries reached
-                    fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
-                    return -1;
-                }
-
-            }
-		/*printf("Please give user thx\n");
-		//printf("tries: %d ",tries);
-		scanf("%s", search);
-		for(userLength=0; search[userLength]!='\0'; userLength++);
-		if(userLength < 4 || userLength > MAX_LENGTH)
-			userLength = 0;
-		if(userLength == 0) {
-			fprintf(stderr,"Invalid username length\n");
+	while(username == 0) {
+		username = getUser();
+		//printf("%s",username);
+		if(username == "-1") {
+			username = 0;
 			tries++;
-			userLength = 1;
 		}
-		else
-			userLength = 2; //infinite loop due to userLength always being 1 regardless of correct length
-		if(tries >= MAX_TRIES) {
-			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0"); //kicks you out of program
-			return -2;
-		}*/
-
-/*		username = getUser();
-		if(username == "-1")
-			tries++;
 		if(tries >= MAX_TRIES) {
 			//ends program when max tries reached
 			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
@@ -85,54 +43,7 @@ int main() {
 		}
 		//if(userExist(username))
 			//getPass
-			*/
-
 	}
-/*
-	while (fgets(buffer, MAX_LENGTH, data) != NULL) { //read text file. read EACH LINE. while txt file isnt empty
-		if((strstr(buffer, search)) != NULL) { //search text file for username(search). if it is found
-			//printf("%s\n", buffer);
-			userFlag=1;
-			ret=strstr(buffer,search); //store line from buffer
-			//printf("Username is: %s",ret); //doesnt search so far. prints out whole file.
-			for(int x = 0; x < MAX_LENGTH; x++) {
-				if(ret[x] == ':')  {
-					int index = 0;
-					for(int y = x+1; y < MAX_PASS_LENGTH + x; y++) {
-						if(ret[y] == '\0')
-							break;
-						passHash[index] = ret[y];
-						passHash[index+1] = '\0';
-						index++;
-					}
-					break;
-				}
-				username[x] = ret[x];
-				username[x+1] = '\0';
-			}
-
-			printf("%s%s\n", username, " found in database");
-			printf("%s%s\n", passHash, " found in database");
-		}
-
-			//ask for old password and then hash it and check it against database
-			//If the hashes match, the user is prompted for a new
-			//password. The hash of the new password then replaces that of
-			//the old password
-	}
-		 //if user doesnt exist add username
-                if((strstr(buffer, search))== NULL && userFlag==0){ //searched username doesnt exist. but buffer still runs
-                    printf("Username doesn't exist. Username created.\n");
-                    char *pass=(char *)calloc(MAX_PASS_LENGTH, sizeof(char)); //allocate space  pass variable
-                    printf("Enter Password: "); // prompt
-                    scanf("%s",pass); // take stdin put in pass
-                    printf(" new User and Pass : %s:%s",search,pass);
-                    fprintf(data, "%s:%s\n",search,pass);
-                    //write new user and pass into database
-                    //write(data,)
-                }
-	fclose(data);*/
-	//return 0;
 
 	int realUser= compare(username);
 	return 0;
@@ -156,32 +67,41 @@ int initData() {
 	while(fgets(buffer, BUFFER, data) != NULL) {
 		token = strtok(buffer, splitChar);
 		while(token != NULL) {
-			printf("%s\n", token);
+			if(counter%2 == 0) {
+				strncpy(userData[counter/2], token, 12);
+				printf("%s Added User\n", userData[counter/2]);
+			}
+			else {
+				strncpy(passData[counter/2], token, 12);
+				printf("%s Added Pass\n", passData[counter/2]);
+			}
 			token = strtok(NULL, splitChar);
+			counter++;
 		}
 	}
+	//printf("END INIT\n");
 }
 
 int compare(char* username) {
     //search for stdin username to see if it matches any in array. return 1 if found. return -1
-    printf("Searching!");
-    for(int i =0; i< MAX_USERS ; i++){
-            if(strcmp(username,Userdata[i])){
-                    printf("Usernames are matched!");
-                return 1;
-            }
-            else
-                printf("Usernames don't match");
-                return 0;
-
-    }
+    for(int i =0; i < MAX_USERS ; i++){
+		printf("Searching for matches for %s with %s\n", username, userData[i]);
+        if(strcmp(username,userData[i]) == 0){
+			printf("Match found!\n");
+			return 1;
+		}
+	}
+	printf("Match not found!\n");
+	return 0;
 }
+
 char* getUser() {
+	printf("GET USER\n");
 	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
 	int userLength = 0;
 	printf("Please give user thx\n");
 	scanf("%s", username);
-
+	
 	userLength = strlen(username);
 
 	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
@@ -189,8 +109,10 @@ char* getUser() {
 		free(username);
 		return "-1";
 	}
+	
 	return username;
 }
+
 char* getPass(int passFlag){
     char* password= (char*)calloc(MAX_PASS_LENGTH,sizeof(char));
     int passlength = 0;
