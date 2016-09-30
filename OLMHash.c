@@ -49,22 +49,20 @@ int main() {
 
 	int realUser = cmprUser(username);
 	
-	if(realUser != 0) {
+	if(realUser != 0 && realUser != -1) {
 		//User was found in database, enter old password
 		password = getPass(1);
 		cmprPass(password, realUser);
 	}
-	else if (realUser == 0) {
+	else if (realUser == -1) {
 		//User added to database, enter password
 		password = getPass(2);
 	}
 	return 0;
-
 }
 
 
 int initData() {
-	stripper("tester\n");
 	FILE* data = fopen("userData.txt", "r+");
 	if(!data) {
 		fprintf(stderr, "Error opening userData.txt");
@@ -86,6 +84,7 @@ int initData() {
 				printf("%s Added User\n", userData[counter/2]);
 			}
 			else {
+				sscanf(token, "%12s", token);
 				strncpy(passData[counter/2], token, 12);
 				printf("%s Added Pass\n", passData[counter/2]);
 			}
@@ -100,18 +99,6 @@ int initData() {
 	//printf("END INIT\n");
 }
 
-char* stripper(char* rekt) {
-	printf("Original string : %s", rekt);
-	
-	int l = strlen(rekt);
-	if((l > 0) && (rekt[l-1] == '\n'))
-		rekt[l-1] == '\0';
-	
-	printf("New string : %s", rekt);
-	printf("TEST");
-	return rekt;
-}
-
 int cmprUser(char* check) {
 	//search for stdin username to see if it matches any in array. return 1 if found. return -1
 	for(int i =0; i < MAX_USERS ; i++){
@@ -122,7 +109,7 @@ int cmprUser(char* check) {
 		}
 	}
 	printf("Match not found!\n");
-	return 0;
+	return -1;
 }
 int cmprPass(char* check, int index) {
 	printf("Searching for matche for %s with %s\n", check, passData[index]);
@@ -131,7 +118,7 @@ int cmprPass(char* check, int index) {
 		return index;
 	}
 	printf("Match not found!\n");
-	return 0;
+	return -1;
 }
 
 char* getUser() {
