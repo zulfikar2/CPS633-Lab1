@@ -14,8 +14,10 @@ void E(char *in, char *out);
 int initData();
 char* getUser();
 char* getPass(int passFlag);
-int compare(char* username);
+int cmprUser(char*);
+int cmprPass(char*, int);
 char* hashIt(char* pass, int length);
+char* stripper(char*);
 
 int main() {
 	
@@ -45,7 +47,17 @@ int main() {
 			//getPass
 	}
 
-	int realUser= compare(username);
+	int realUser = cmprUser(username);
+	
+	if(realUser != 0) {
+		//User was found in database, enter old password
+		password = getPass(1);
+		cmprPass(password, realUser);
+	}
+	else if (realUser == 0) {
+		//User added to database, enter password
+		password = getPass(2);
+	}
 	return 0;
 
 }
@@ -79,17 +91,37 @@ int initData() {
 			counter++;
 		}
 	}
+	
+	for(int i = 0; i < MAX_USERS; i++) {
+		stripper(passData[i]);
+	}
 	//printf("END INIT\n");
 }
 
-int compare(char* username) {
-    //search for stdin username to see if it matches any in array. return 1 if found. return -1
-    for(int i =0; i < MAX_USERS ; i++){
-		printf("Searching for matches for %s with %s\n", username, userData[i]);
-        if(strcmp(username,userData[i]) == 0){
+char* stripper(char* rekt) {
+	int l = strlen(rekt);
+	if((l > 0) && (rekt[l] == '\n'))
+		rekt[l] == '\0';
+	return rekt;
+}
+
+int cmprUser(char* check) {
+	//search for stdin username to see if it matches any in array. return 1 if found. return -1
+	for(int i =0; i < MAX_USERS ; i++){
+		printf("Searching for matches for %s with %s\n", check, userData[i]);
+		if(strcmp(check,userData[i]) == 0){
 			printf("Match found!\n");
-			return 1;
+			return i;
 		}
+	}
+	printf("Match not found!\n");
+	return 0;
+}
+int cmprPass(char* check, int index) {
+	printf("Searching for matche for %s with %s\n", check, passData[index]);
+	if(strcmp(check,passData[index]) == 0){
+		printf("Match found!\n");
+		return index;
 	}
 	printf("Match not found!\n");
 	return 0;
@@ -119,7 +151,7 @@ char* getPass(int passFlag){
 	if(passFlag == 1)
 		printf("User was found in database, enter old password:\n");
 	else if (passFlag == 2)
-		printf("User added to database, enter password for username:\n");
+		printf("User added to database, enter password:\n");
 	else if (passFlag == 3)
 		printf("Passwords match, enter new password for username:\n");
 	scanf("%s", password);
