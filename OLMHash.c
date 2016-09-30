@@ -49,7 +49,7 @@ int main() {
 
 	int realUser = cmprUser(username);
 	
-	if(realUser != 0 && realUser != -1) {
+	if(realUser != -1) {
 		//User was found in database, enter old password
 		password = getPass(1);
 		cmprPass(password, realUser);
@@ -92,11 +92,6 @@ int initData() {
 			counter++;
 		}
 	}
-	
-	//for(int i = 0; i < MAX_USERS; i++) {
-		//stripper(passData[i]);
-	//}
-	//printf("END INIT\n");
 }
 
 int cmprUser(char* check) {
@@ -112,7 +107,7 @@ int cmprUser(char* check) {
 	return -1;
 }
 int cmprPass(char* check, int index) {
-	printf("Searching for matche for %s with %s\n", check, passData[index]);
+	printf("Searching for matched for %s with %s\n", check, passData[index]);
 	if(strcmp(check,passData[index]) == 0){
 		printf("Match found!\n");
 		return index;
