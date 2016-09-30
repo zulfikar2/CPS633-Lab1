@@ -4,7 +4,7 @@
 
 #define MAX_TRIES 3
 #define MAX_PASS_LENGTH 13
-#define MAX_USERNAME_LENGTH 32
+#define MAX_USERNAME_LENGTH 33
 #define MAX_USERS 50
 
 char Userdata[MAX_USERS][MAX_USERNAME_LENGTH];
@@ -36,10 +36,11 @@ int main() {
 	int userFlag=0; // 0 for new user 1 for registered user
 	//fprintf(data, "username : password\n");
 	//printf("%s\n", passHash);    PRINT GIVEN*/
-	
+
 	initData();
-	
+
 	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	char* password=(char*)calloc(MAX_PASS_LENGTH, sizeof(char));
 	int tries = 0;
 
 	while(1) {
@@ -60,7 +61,7 @@ int main() {
 			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0"); //kicks you out of program
 			return -2;
 		}*/
-		
+
 		username = getUser();
 		if(username == "-1")
 			tries++;
@@ -125,13 +126,13 @@ int initData() {
 		fprintf(stderr, "Error opening userData.txt");
 		return -1;
 	}
-	
+
 	const size_t BUFFER = 255;
 	char* buffer = (char*)calloc(BUFFER, sizeof(char));
 	const char splitChar[2] = ":";
 	int counter = 0;
 	char* token;
-	
+
 	while(fgets(buffer, BUFFER, data) != NULL) {
 		token = strtok(buffer, splitChar);
 		while(token != NULL) {
@@ -142,7 +143,7 @@ int initData() {
 }
 
 int userExist(char* username) {
-	
+
 	return 0;
 }
 char* getUser() {
@@ -160,10 +161,9 @@ char* getUser() {
 	}
 	return username;
 }
-
-char* getPass(int passFlag) {																																																																																																																									+
-	char* password = (char*)calloc(MAX_PASS_LENGTH, sizeof(char));
-	int passlength = 0;
+char* getPass(int passFlag){
+    char* password= (char*)calloc(MAX_PASS_LENGTH,sizeof(char));
+    int passlength = 0;
 	if(passFlag == 1)
 		printf("User was found in database, enter old password:\n");
 	else if (passFlag == 2)
@@ -180,7 +180,10 @@ char* getPass(int passFlag) {																																																			
 		return password;
 	}
 	return password;
+
 }
+
+
 
 
 char* hashIt(char* pass, int length) {
