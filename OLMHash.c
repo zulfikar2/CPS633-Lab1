@@ -17,7 +17,7 @@ char* getUser();
 char* getPass(int);
 int cmprUser(char*);
 int cmprPass(char*, int);
-char* hashIt(char*);
+char* hashIt(char*, int);
 int writeData();
 
 int main() {
@@ -52,13 +52,13 @@ int main() {
 	if(realUser != -1) {
 		//User was found in database, enter old password
 		password = getPass(1);
-		password = hashIt(password);
+		password = hashIt(password,3);
 		cmprPass(password, realUser);
 	}
 	else if (realUser == -1) {
 		//User added to database, enter password
 		password = getPass(2);
-		password = hashIt(password);
+		password = hashIt(password,3);
 		//printf("copy\n");
 		strncpy(userData[users], username, strlen(username));
 		//printf(userData[users]);
@@ -184,7 +184,7 @@ char* getPass(int passFlag){
 
 
 
-char* hashIt(char* pass) {
+char* hashIt(char* pass, int length) {
 	char* hashed = calloc(MAX_PASS_LENGTH,sizeof(char));
 	for(int i = 0; pass[i] != '\0'; i++)
 		E(&pass[4*i], &hashed[4*i]);
