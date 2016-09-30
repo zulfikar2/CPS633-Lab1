@@ -64,6 +64,7 @@ int main() {
 
 
 int initData() {
+	stripper("tester\n");
 	FILE* data = fopen("userData.txt", "r+");
 	if(!data) {
 		fprintf(stderr, "Error opening userData.txt");
@@ -75,7 +76,8 @@ int initData() {
 	const char splitChar[2] = ":";
 	int counter = 0;
 	char* token;
-
+	int length;
+	
 	while(fgets(buffer, BUFFER, data) != NULL) {
 		token = strtok(buffer, splitChar);
 		while(token != NULL) {
@@ -92,16 +94,21 @@ int initData() {
 		}
 	}
 	
-	for(int i = 0; i < MAX_USERS; i++) {
-		stripper(passData[i]);
-	}
+	//for(int i = 0; i < MAX_USERS; i++) {
+		//stripper(passData[i]);
+	//}
 	//printf("END INIT\n");
 }
 
 char* stripper(char* rekt) {
+	printf("Original string : %s", rekt);
+	
 	int l = strlen(rekt);
-	if((l > 0) && (rekt[l] == '\n'))
-		rekt[l] == '\0';
+	if((l > 0) && (rekt[l-1] == '\n'))
+		rekt[l-1] == '\0';
+	
+	printf("New string : %s", rekt);
+	printf("TEST");
 	return rekt;
 }
 
