@@ -59,9 +59,9 @@ int main() {
 		password = getPass(2);
 		//printf("copy\n");
 		strncpy(userData[users], username, strlen(username));
-		//printf("copy2\n");
+		//printf(userData[users]);
 		strncpy(passData[users], password, strlen(password));
-		//printf("copy3\n");
+		//printf(passData[users]);
 		users++;
 		//printf("gunn write soon\n");
 		writeData();
@@ -70,24 +70,14 @@ int main() {
 }
 
 int writeData() {
-	printf("opening file\n");
-	FILE* data = fopen("userData.txt", "w+");
+	FILE* data = fopen("userData.txt", "a+");
+
 	if(!data) {
-		fprintf(stderr, "Error creating userData.txt to write\n");
+		fprintf(stderr, "Error opening userData.txt to append\n");
 		return -1;
 	}
-	
-	int userCount = 0;
-	printf("ABOUT TO WRITE");
-	while(userCount <= users) {
-		char* towrite;
-		strcat(towrite, userData[userCount]);
-		strcat(towrite, ":");
-		strcat(towrite, passData[userCount]);
-		fwrite(towrite, 1, sizeof(towrite), data);
-		printf("Wrote %s", towrite);
-		userCount++;
-	}
+	fprintf(data, "%s:%s\n", userData[users-1], passData[users-1]);
+	fclose(data);
 	return 1;
 }
 
