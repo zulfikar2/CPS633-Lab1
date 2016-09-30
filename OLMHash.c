@@ -5,6 +5,7 @@
 #define MAX_USERNAME_LENGTH 32
 #define MAX_TRIES 3
 #define MAX_PASS_LENGTH 13
+#define MAX_LENGTH 32
 
 void E(char *in, char *out);
 
@@ -18,8 +19,8 @@ int main() {
 
 	char username[MAX_USERNAME_LENGTH];
 	char passHash[MAX_PASS_LENGTH];
-	char buffer[MAX_LENGTH];
-	char search[MAX_LENGTH];
+	char buffer[MAX_USERNAME_LENGTH];
+	char search[MAX_USERNAME_LENGTH];
 	char *ret;
 	int userLength = 1;
 	int tries = 0;
@@ -68,7 +69,7 @@ int main() {
 				username[x] = ret[x];
 				username[x+1] = '\0';
 			}
-			
+
 			printf("%s%s\n", username, " found in database");
 			printf("%s%s\n", passHash, " found in database");
 		}
@@ -94,23 +95,23 @@ int main() {
 }
 char* getUser() {
 	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
-	int userlength = 0;
+	int userLength = 0;
 	printf("Please give user thx\n");
 	scanf("%s", username);
-	
-	userlength = strlen(username);
-	
+
+	userLength = strlen(username);
+
 	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
 		fprintf(stderr,"Invalid username length\n");
 		free(username);
 		return 0;
 	}
 	return username;
-	} 
-}
+	}
+
 
 char* getPass() {
-	char* password = char*)calloc(MAX_PASS_LENGTH, sizeof(char));
+	char* password = (char*)calloc(MAX_PASS_LENGTH, sizeof(char));
 	int passlength = 0;
 	printf("User not found, enter password for username:\n");
 	scanf("%s", password);
@@ -122,12 +123,12 @@ char* getPass() {
 		}
 		return password;
 	}
-	return password;	
+	return password;
 }
 
 
 char* hashIt(char* pass, int length) {
-	char* hashed = calloc(sizeof(char) * length);
+	char* hashed = calloc(MAX_LENGTH,sizeof(char) * length);
 	for(int i = 0; pass[i] != '\0'; i++)
 		E(&pass[4*i], &hashed[4*i]);
 	return hashed;
