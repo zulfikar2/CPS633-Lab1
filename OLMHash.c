@@ -2,22 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_USERNAME_LENGTH 32
 #define MAX_TRIES 3
 #define MAX_PASS_LENGTH 13
-#define MAX_LENGTH 32
+#define MAX_USERNAME_LENGTH 32
+#define MAX_USERS 50
+
+char Userdata[MAX_USERS][MAX_USERNAME_LENGTH];
+char Passdata[MAX_USERS][MAX_PASS_LENGTH];
 
 void E(char *in, char *out);
+int initData();
+char* getUser();
+char* getPass(int passFlag);
+int userExist(char* username);
+char* hashIt(char* pass, int length);
 
 int main() {
-	FILE* data;
+	/*FILE* data;
 	data = fopen("userData.txt", "r+");
 	if(!data) {
 		fprintf(stderr, "Error opening userData.txt");
 		return -1;
-	}
+	}*/
 
-	char username[MAX_USERNAME_LENGTH];
+	/*char username[MAX_USERNAME_LENGTH];
+
 	char passHash[MAX_PASS_LENGTH];
 	char buffer[MAX_USERNAME_LENGTH];
 	char search[MAX_USERNAME_LENGTH];
@@ -26,10 +35,15 @@ int main() {
 	int tries = 0;
 	int userFlag=0; // 0 for new user 1 for registered user
 	//fprintf(data, "username : password\n");
-	//printf("%s\n", passHash);    PRINT GIVEN
+	//printf("%s\n", passHash);    PRINT GIVEN*/
+	
+	initData();
+	
+	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	int tries = 0;
 
-	while(userLength == 1) {
-		printf("Please give user thx\n");
+	while(1) {
+		/*printf("Please give user thx\n");
 		//printf("tries: %d ",tries);
 		scanf("%s", search);
 		for(userLength=0; search[userLength]!='\0'; userLength++);
@@ -45,9 +59,20 @@ int main() {
 		if(tries >= MAX_TRIES) {
 			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0"); //kicks you out of program
 			return -2;
+		}*/
+		
+		username = getUser();
+		if(username == "-1")
+			tries++;
+		if(tries >= MAX_TRIES) {
+			//ends program when max tries reached
+			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
+			return -1;
 		}
+		//if(userExist(username))
+			//getPass
 	}
-
+/*
 	while (fgets(buffer, MAX_LENGTH, data) != NULL) { //read text file. read EACH LINE. while txt file isnt empty
 		if((strstr(buffer, search)) != NULL) { //search text file for username(search). if it is found
 			//printf("%s\n", buffer);
@@ -90,7 +115,34 @@ int main() {
                     //write new user and pass into database
                     //write(data,)
                 }
-	fclose(data);
+	fclose(data);*/
+	return 0;
+}
+
+int initData() {
+	FILE* data = fopen("userData.txt", "r+");
+	if(!data) {
+		fprintf(stderr, "Error opening userData.txt");
+		return -1;
+	}
+	
+	const size_t BUFFER = 255;
+	char* buffer = (char*)calloc(BUFFER, sizeof(char));
+	const char splitChar[2] = ":";
+	int counter = 0;
+	char* token;
+	
+	while(fgets(buffer, BUFFER, data) != NULL) {
+		token = strtok(buffer, splitChar);
+		while(token != NULL) {
+			printf("%s\n", token);
+			token = strtok(NULL, splitChar);
+		}
+	}
+}
+
+int userExist(char* username) {
+	
 	return 0;
 }
 char* getUser() {
@@ -104,16 +156,20 @@ char* getUser() {
 	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
 		fprintf(stderr,"Invalid username length\n");
 		free(username);
-		return 0;
+		return "-1";
 	}
 	return username;
-	}
+}
 
-
-char* getPass() {
+char* getPass(int passFlag) {																																																																																																																									+
 	char* password = (char*)calloc(MAX_PASS_LENGTH, sizeof(char));
 	int passlength = 0;
-	printf("User not found, enter password for username:\n");
+	if(passFlag == 1)
+		printf("User was found in database, enter old password:\n");
+	else if (passFlag == 2)
+		printf("User added to database, enter password for username:\n");
+	else if (passFlag == 3)
+		printf("Passwords match, enter new password for username:\n");
 	scanf("%s", password);
 	passlength = strlen(password);
 	if(passlength > MAX_PASS_LENGTH) {
@@ -128,7 +184,7 @@ char* getPass() {
 
 
 char* hashIt(char* pass, int length) {
-	char* hashed = calloc(MAX_LENGTH,sizeof(char) * length);
+	char* hashed = calloc(MAX_PASS_LENGTH,sizeof(char));
 	for(int i = 0; pass[i] != '\0'; i++)
 		E(&pass[4*i], &hashed[4*i]);
 	return hashed;
