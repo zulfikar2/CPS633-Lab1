@@ -63,7 +63,7 @@ int main() {
 					break;
 			}
 			printf("%s%s\n", username, " found in database");
-			printf("password is: %s\n",)
+			printf("password is: %s\n",password);
 		}
 
 

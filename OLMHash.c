@@ -14,7 +14,7 @@ void E(char *in, char *out);
 int initData();
 char* getUser();
 char* getPass(int passFlag);
-int userExist(char* username);
+int compare(char* username);
 char* hashIt(char* pass, int length);
 
 int main() {
@@ -39,11 +39,24 @@ int main() {
 
 	initData();
 
-	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	//char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	char* username =0;
 	char* password=(char*)calloc(MAX_PASS_LENGTH, sizeof(char));
 	int tries = 0;
 
 	while(1) {
+            while(username==0){
+                    username = getUser();
+                    printf("%s",username);
+		            if(username == "-1")
+			               tries++;
+                    if(tries >= MAX_TRIES) {
+                    //ends program when max tries reached
+                    fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
+                    return -1;
+                }
+
+            }
 		/*printf("Please give user thx\n");
 		//printf("tries: %d ",tries);
 		scanf("%s", search);
@@ -62,7 +75,7 @@ int main() {
 			return -2;
 		}*/
 
-		username = getUser();
+/*		username = getUser();
 		if(username == "-1")
 			tries++;
 		if(tries >= MAX_TRIES) {
@@ -72,6 +85,8 @@ int main() {
 		}
 		//if(userExist(username))
 			//getPass
+			*/
+
 	}
 /*
 	while (fgets(buffer, MAX_LENGTH, data) != NULL) { //read text file. read EACH LINE. while txt file isnt empty
@@ -117,8 +132,13 @@ int main() {
                     //write(data,)
                 }
 	fclose(data);*/
+	//return 0;
+
+	int realUser= compare(username);
 	return 0;
+
 }
+
 
 int initData() {
 	FILE* data = fopen("userData.txt", "r+");
@@ -142,9 +162,19 @@ int initData() {
 	}
 }
 
-int userExist(char* username) {
+int compare(char* username) {
+    //search for stdin username to see if it matches any in array. return 1 if found. return -1
+    printf("Searching!");
+    for(int i =0; i< MAX_USERS ; i++){
+            if(strcmp(username,Userdata[i])){
+                    printf("Usernames are matched!");
+                return 1;
+            }
+            else
+                printf("Usernames don't match");
+                return 0;
 
-	return 0;
+    }
 }
 char* getUser() {
 	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
