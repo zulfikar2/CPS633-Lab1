@@ -52,13 +52,13 @@ int main() {
 	if(realUser != -1) {
 		//User was found in database, enter old password
 		password = getPass(1);
-		//encrypt pass here (password = encrypted)
+		password = hashIt(password,3);
 		cmprPass(password, realUser);
 	}
 	else if (realUser == -1) {
 		//User added to database, enter password
 		password = getPass(2);
-		//encrypt pass here (password = encrypted)
+		password = hashIt(password,3);
 		//printf("copy\n");
 		strncpy(userData[users], username, strlen(username));
 		//printf(userData[users]);
