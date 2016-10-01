@@ -72,13 +72,14 @@ int main() {
 }
 
 int writeData() {
-	FILE* data = fopen("userData.txt", "a+");
+	FILE* data = fopen("userData.txt", "w+");
 
 	if(!data) {
 		fprintf(stderr, "Error opening userData.txt to append\n");
 		return -1;
 	}
-	fprintf(data, "%s:%s\n", userData[users-1], passData[users-1]);
+	for(int i = 0; i < users; i++)
+		fprintf(data, "%s:%s\n", userData[i], passData[i]);
 	fclose(data);
 	return 1;
 }
