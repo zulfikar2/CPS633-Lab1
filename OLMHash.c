@@ -43,22 +43,44 @@ int main() {
 			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
 			return -1;
 		}
-		//if(userExist(username))
-			//getPass
 	}
 
 	int realUser = cmprUser(username);
 	
 	if(realUser != -1) {
 		//User was found in database, enter old password
-		password = getPass(1);
-		password = hashIt(password,3);
-		cmprPass(password, realUser);
+		/*password = getPass(1);
+		password = hashIt(password,strlen(password));
+		if(cmprPass(password, realUser) != -1) {
+			password = getPass(3);
+			password = hashIt(password,strlen(password));
+			strncpy(passData[realUser], password, strlen(password));
+			writeData();
+		}
+		else {*/
+			while(1) {
+				password = getPass(1);
+				password = hashIt(password,strlen(password));
+				if(cmprPass(password, realUser) != -1) {
+					password = getPass(3);
+					password = hashIt(password,strlen(password));
+					strncpy(passData[realUser], password, strlen(password));
+					writeData();
+					break;
+				}
+				tries++;
+				if(tries >= MAX_TRIES) {
+					//ends program when max tries reached
+					fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
+					return -1;
+				}
+			}
+		//}
 	}
 	else if (realUser == -1) {
 		//User added to database, enter password
 		password = getPass(2);
-		password = hashIt(password,3);
+		password = hashIt(password,strlen(password));
 		//printf("copy\n");
 		strncpy(userData[users], username, strlen(username));
 		//printf(userData[users]);
