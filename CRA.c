@@ -2,12 +2,11 @@
 
 char userData[MAX_USERS][MAX_USERNAME_LENGTH];
 char passData[MAX_USERS][MAX_PASS_LENGTH];
-int users = 0;
 
 void existingUser(char* username, int index);
 char* randomXOR(char* hash, int r);
 void XorIt(char* in, char* out, int r);
-void newUser(char* username);
+
 
 int CRA()
 {
@@ -20,15 +19,10 @@ int CRA()
 		username = getUser();
 	}
 
-	int realUser = cmprUser(username);
-	if(realUser == -1)
-	{
-		newUser(username);
-	}
-	else
-	{
-		existingUser(username, realUser);
-	}
+	int realUser = cmprUser(username); //check if username is in db
+	if(realUser==0) //if username does exist. User assumes it exist
+    existingUser(username, realUser);
+
 }
 
 void existingUser(char* username, int index)

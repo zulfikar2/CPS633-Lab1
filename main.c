@@ -1,13 +1,14 @@
 #include "Hasher.h"
 
 int main() {
+    OLMHash();
 	printf("Seperate files plz chuse run\n");
 	printf(" 1 : OLMHash Password Scheme");
 	printf(" 2 : Challenge-Response (Online) Authentication\n");
 	printf(" 3 : OPassword Cracker");
-	
+
 	int input = -1;
-	
+
 	while(input == -1) {
 		scanf("%d", &input);
 		switch(input) {
@@ -27,7 +28,8 @@ int main() {
 				printf(" 2 : Challenge-Response (Online) Authentication\n");
 				printf(" 3 : OPassword Cracker");
 				break;
-		}
-	}
+            }
+        }
+
 	return 0;
 }

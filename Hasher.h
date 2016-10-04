@@ -14,7 +14,7 @@
 
 extern char userData[MAX_USERS][MAX_USERNAME_LENGTH];
 extern char passData[MAX_USERS][MAX_PASS_LENGTH];
-extern int users;
+extern  int users;
 
 void E(char *in, char *out);
 int initData();
