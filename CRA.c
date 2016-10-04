@@ -17,10 +17,10 @@ int CRA()
 	//Asks for userinput from user.
 	while(username == 0)
 	{
-		username = getUser(userData, passData);
+		username = getUser();
 	}
 
-	int realUser = cmprUser(username, users, userData);
+	int realUser = cmprUser(username);
 	if(realUser == -1)
 	{
 		newUser(username);

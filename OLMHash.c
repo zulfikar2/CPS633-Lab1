@@ -4,6 +4,8 @@ char userData[MAX_USERS][MAX_USERNAME_LENGTH];
 char passData[MAX_USERS][MAX_PASS_LENGTH];
 int users = 0;
 
+int writeData();
+
 int OLMHash() {
 	//initialize userData and passData arrays.
 	initData();
@@ -73,24 +75,6 @@ int writeData() {
 		fprintf(data, "%s:%s\n", userData[i], passData[i]);
 	fclose(data);
 	return 1;
-}
-
-char* getUser() {
-	char* username = (char*)calloc(255, sizeof(char));
-	int userLength = 0;
-	printf("Please give user thx\n");
-	scanf("%s", username);
-
-
-	userLength = strlen(username);
-
-	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
-		fprintf(stderr,"Invalid username length\n");
-		free(username);
-		return "-1";
-	}
-
-	return username;
 }
 
 char* hashIt(char* pass, int length) {
