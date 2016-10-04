@@ -2,14 +2,14 @@
 
 char userData[MAX_USERS][MAX_USERNAME_LENGTH];
 char passData[MAX_USERS][MAX_PASS_LENGTH];
-int users;
+int users = 0;
 
 void existingUser(char* username, int index);
 char* randomXOR(char* hash, int r);
 void XorIt(char* in, char* out, int r);
 void newUser(char* username);
 
-int main()
+int CRA()
 {
 	initData(userData, passData);
 	srand(time(NULL));
@@ -29,17 +29,6 @@ int main()
 	{
 		existingUser(username, realUser);
 	}
-}
-
-void newUser(char* username)
-{
-	char* pass = getPass(2);
-	pass = hashIt(pass, strlen(pass));
-	strncpy(userData[users], username, strlen(username));
-	strncpy(passData[users], pass, strlen(pass));
-	users++;
-	writeData();
-	printf("User added.\n");
 }
 
 void existingUser(char* username, int index)

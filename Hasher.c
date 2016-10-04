@@ -1,18 +1,5 @@
 #include "Hasher.h"
 
-int writeData() {
-	FILE* data = fopen("userData.txt", "w+");
-
-	if(!data) {0
-		fprintf(stderr, "Error opening userData.txt to append\n");
-		return -1;
-	}
-	for(int i = 0; i < users; i++)
-		fprintf(data, "%s:%s\n", userData[i], passData[i]);
-	fclose(data);
-	return 1;
-}
-
 int initData() {
 	FILE* data = fopen("userData.txt", "r+");
 	if(!data) {
@@ -61,6 +48,7 @@ int cmprUser(char* check) {
 	printf("Match not found!\n");
 	return -1;
 }
+
 int cmprPass(char* check, int index) {
 	//printf("Searching for matched for %s with %s\n", check, passData[index]);
 	if(strcmp(check,passData[index]) == 0){
