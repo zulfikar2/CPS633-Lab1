@@ -1,3 +1,1 @@
-cps 633 function list
--take inputted username and check if it exists ( right now prints all variations of that username)
-- add username to database
+- truncate username and if its too long deny access.

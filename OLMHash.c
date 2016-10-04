@@ -1,41 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-#define MAX_TRIES 3
-#define MAX_PASS_LENGTH 12
-#define MAX_USERNAME_LENGTH 33
-#define MAX_USERS 50
+#include "OLMHash.h"
 
 char userData[MAX_USERS][MAX_USERNAME_LENGTH];
 char passData[MAX_USERS][MAX_PASS_LENGTH];
 int users = 0;
-
-void E(char *in, char *out);
-int initData();
-char* getUser();
-char* getPass(int);
-int cmprUser(char*);
-int cmprPass(char*, int);
-char* hashIt(char*, int);
-int writeData();
 
 int main() {
 	//initialize userData and passData arrays.
 	initData();
 
 	//char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
-	
+
 	//Initialize data
 	char* username =0;
 	char* password=(char*)calloc(255, sizeof(char));
 	int tries = 0;
 
-	while(username == 0) {
+	while(username == 0) { //while username is empty --- validator of username
 		username = getUser();
 		//printf("%s",username);
-		if(username == "-1") {
+		if(username == "-1") { //username too long
 			username = 0;
 			tries++;
 		}
@@ -47,7 +30,7 @@ int main() {
 	}
 
 	int realUser = cmprUser(username);
-	
+
 	if(realUser != -1) {
 			while(1) {
 				password = getPass(1);
@@ -110,7 +93,7 @@ int initData() {
 	int counter = 0;
 	char* token;
 	int length;
-	
+
 	while(fgets(buffer, BUFFER, data) != NULL) {
 		token = strtok(buffer, splitChar);
 		while(token != NULL) {
@@ -128,7 +111,7 @@ int initData() {
 			counter++;
 		}
 	}
-	
+
 	fclose(data);
 	return 1;
 }
@@ -157,11 +140,12 @@ int cmprPass(char* check, int index) {
 
 char* getUser() {
 	//printf("GET USER\n");
-	char* username = (char*)calloc(MAX_USERNAME_LENGTH, sizeof(char));
+	char* username = (char*)calloc(255, sizeof(char));
 	int userLength = 0;
 	printf("Please give user thx\n");
 	scanf("%s", username);
-	
+
+
 	userLength = strlen(username);
 
 	if(userLength < 4 || userLength > MAX_USERNAME_LENGTH) {
@@ -169,7 +153,7 @@ char* getUser() {
 		free(username);
 		return "-1";
 	}
-	
+
 	return username;
 }
 
@@ -216,7 +200,7 @@ void E(char *in, char *out)
 	char in1 = toupper(in[1]);
 	char in2 = toupper(in[2]);
 	char in3 = toupper(in[3]);
-	
+
 out[0]=(in0&0x80)^(((in0>>1)&0x7F)^((in0)&0x7F));
 out[1]=((in1&0x80)^((in0<<7)&0x80))^(((in1>>1)&0x7F)^((in1)&0x7F));
 out[2]=((in2&0x80)^((in1<<7)&0x80))^(((in2>>1)&0x7F)^((in2)&0x7F));
