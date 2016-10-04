@@ -77,6 +77,7 @@ int writeData() {
 	return 1;
 }
 
+
 char* hashIt(char* pass, int length) {
 	char* hashed = calloc(MAX_PASS_LENGTH,sizeof(char));
 	for(int i = 0; i < length; i++)
