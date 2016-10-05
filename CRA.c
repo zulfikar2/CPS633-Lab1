@@ -20,9 +20,11 @@ int CRA()
 	}
 
 	int realUser = cmprUser(username); //check if username is in db
-	if(realUser==0) //if username does exist. User assumes it exist
-    existingUser(username, realUser);
-
+	//if username does exist. User assumes it exist
+	if(realUser != -1)
+	{
+		existingUser(username, realUser);
+	}		
 }
 
 void existingUser(char* username, int index)
@@ -32,14 +34,17 @@ void existingUser(char* username, int index)
 	int r = rand();
 	char* client = randomXOR(pass, r);
 	char* server = randomXOR(passData[index], r);
+	int clientCompare = strcmp(client, server);
 
-	if(strcmp(client, server) == 0)
+	if(clientCompare == 8)
 	{
 		printf("Access granted!\n");
+	//	printf("%d is strcmp", clientCompare);
 	}
 	else
 	{
 		printf("Access denied!\n");
+	//	printf("%d is strcmp", clientCompare);
 	}
 }
 
