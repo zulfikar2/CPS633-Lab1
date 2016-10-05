@@ -35,7 +35,7 @@ void findHash(char *str, int current, int end) {
 }
 
 
-//hit em with the doo doo
+
 int OPC() {
     char str[LENGTH + 1];
     memset(str, 0, LENGTH + 1); // str is string to fill in, fill it in with zeros first and stop up to 5. since it is 4 characters and a null char.
@@ -55,3 +55,4 @@ int OPC() {
 	}
 return 0;	
 }
+
