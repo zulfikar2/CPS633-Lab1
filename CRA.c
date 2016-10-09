@@ -14,17 +14,18 @@ int CRA()
 	srand(time(NULL));
 	char* username = 0;
 	//Asks for userinput from user.
-	while(username == 0)
-	{
-		username = getUser();
-	}
+	username = getUser();
 
-	int realUser = cmprUser(username); //check if username is in db
-	//if username does exist. User assumes it exist
-	if(realUser != -1)
-	{
+	//real user should return index of username if it exists, otherwise -1
+	int realUser = cmprUser(username);
+
+	if(realUser != -1) {
 		existingUser(username, realUser);
-	}		
+	}
+	else {
+		printf("User does not exist.");
+		return -1;
+	}
 }
 
 void existingUser(char* username, int index)
@@ -39,12 +40,10 @@ void existingUser(char* username, int index)
 	if(clientCompare == 8)
 	{
 		printf("Access granted!\n");
-	//	printf("%d is strcmp", clientCompare);
 	}
 	else
 	{
 		printf("Access denied!\n");
-	//	printf("%d is strcmp", clientCompare);
 	}
 }
 
