@@ -11,30 +11,34 @@ int OLMHash() {
 	initData();
 	
 	//Initialize data
-	char* username =0;
-	char* password=(char*)calloc(255, sizeof(char));
+	char* username = (char*)calloc(255, sizeof(char));
+	strncpy(username, "-1", strlen("-1"));
+	char* password = (char*)calloc(255, sizeof(char));
 	int tries = 0;
 
-	while(username == 0) { //while username is empty --- validator of username
+	//while username is empty or invalid
+	while(strcmp(username, "-1") == 0) { 
 		username = getUser();
-		//printf("%s",username);
-		if(username == "-1") { //username too long
-			username = 0;
+		//username too long/invalid
+		if(strcmp(username, "-1") == 0) {
 			tries++;
-		}
-		if(tries >= MAX_TRIES) {
+			if(tries >= MAX_TRIES) {
 			//ends program when max tries reached
 			fprintf(stderr, "Too many unsuccessful attempts - your account is locked\0");
 			return -1;
+			}
 		}
 	}
-
+	
+	//real user should return index of username if it exists, otherwise -1
 	int realUser = cmprUser(username);
-
+	
+	//if user exists, ask for old pass
 	if(realUser != -1) {
 			while(1) {
 				password = getPass(1);
 				password = hashIt(password,strlen(password));
+				//if old pass matches whats inputted ask for new pass and replace old pass
 				if(cmprPass(password, realUser) != -1) {
 					password = getPass(3);
 					password = hashIt(password,strlen(password));
@@ -64,6 +68,10 @@ int OLMHash() {
 	return 0;
 }
 
+/**
+  * @desc writes the user/pass table to file
+  * @return int - success or failure of write
+*/
 int writeData() {
 	FILE* data = fopen("userData.txt", "w+");
 
@@ -78,6 +86,12 @@ int writeData() {
 }
 
 
+/**
+  * @desc Hashes the entire password at once using the E function
+  * @param char* pass - the password to be hashes
+  *	@param int length - the length of the password
+  * @return char* - the hashed password
+*/
 char* hashIt(char* pass, int length) {
 	char* hashed = calloc(MAX_PASS_LENGTH,sizeof(char));
 	for(int i = 0; i < length; i++)
