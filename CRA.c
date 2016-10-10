@@ -7,7 +7,7 @@ void existingUser(char* username, int index);
 char* randomXOR(char* hash, int r);
 void XorIt(char* in, char* out, int r);
 
-
+//Initiates CRA functionality.
 int CRA()
 {
 	initData(userData, passData);
@@ -28,6 +28,12 @@ int CRA()
 	}
 }
 
+/**
+  * @desc Runs when existing user is found in the database.
+  * @param char* username - the username found in the database.
+  *	@param int index - the index in the table where the password is found.
+  * Prints "Access Granted" if randomXOR(pass, r) is equal to the result sent by the user, and "access denied" if otherwise.
+*/
 void existingUser(char* username, int index)
 {
 	char* pass = getPass(1);
@@ -47,6 +53,12 @@ void existingUser(char* username, int index)
 	}
 }
 
+/**
+  * @desc Splits 32-bit number into 4 sections of 8-bits each and performs a bitwise shift right 8 bits.(>>)
+  * @param char* in - the password to use XOR function on.
+  *	@param char* out - the char array to fill with the 32-bit number.
+  *	@param int r - the randomly generated number.
+*/
 void XorIt(char* in, char* out, int r)
 {
 	out[3] = in[3] ^ (r & 255);
@@ -58,6 +70,12 @@ void XorIt(char* in, char* out, int r)
 	out[0] = in[0] ^ (r & 255);
 }
 
+/**
+  * @desc Runs the XOR function on indexes of the password.
+  * @param char* pass - the password to use XOR function on.
+  *	@param int r - the randomly generated number.
+  *@return char* out - f(r, h').
+*/
 char* randomXOR(char* pass, int r)
 {
 	char * out = (char*)calloc(MAX_PASS_LENGTH, sizeof(char));
