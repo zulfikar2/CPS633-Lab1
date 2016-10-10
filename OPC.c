@@ -1,35 +1,45 @@
 #include "Hasher.h"
 
-#define LENGTH 4 //length of all possible generated words
-#define MAX 456976 //amount of passwords you can generate with LEN as 4 (26^4)
+#define LENGTH 4
+#define MAX 456976
 #define hashLength 12
 
-    char passwords[MAX][LENGTH+1]; //array that contains all of generated posssible passwords
-	char hashed[MAX][LENGTH+1];    // array that contains all of the hashed generated possible passwords
-	int idx;
-	char hashpass;
+    char passwords[MAX][LENGTH+1];
+	char hashed[MAX][LENGTH+1];
+    char hashpass;
+    int idx;
+/**
+  * @desc creates dictionary of all possible LENGTH-character long passwords made of upper-case letters only
+  * @param char* str - the array where the hashed passwords will be temporarily stored
+  *     @param int current - the current index of the array
+  *         @param int end - the last index of the array
+*/
 void findHash(char *str, int current, int end) {
-    char c;
-    if (current < (end - 1)) { //if current index is less than length then continue to add characters to string
-        for (c = 'A'; c <= 'Z'; ++c) {
-            str[current] = c; // add whatever letter from A to Z to str array on current index
 
-            findHash(str, current + 1, end); //apply recursion to next index
+    char c;
+    //if current index is less than length then continue to add characters to string
+    if (current < (end - 1)) {
+        for (c = 'A'; c <= 'Z'; ++c) {
+            // add whatever letter from A to Z to str array on current index
+            str[current] = c;
+            //apply recursion to next index
+            findHash(str, current + 1, end);
         }
-    } else { //if current index is equal to end which means just add one more char value from alphabet. 
-        for (c = 'A'; c <= 'Z'; ++c) { //right now its at 4...
-            str[current] = c; //add last letter to array
-			
-			str[current+1] = '\0'; //PROBLEM IS STRCPY DEPENDS ON TRAILING \0 WHICH MAY NOT ALWAYS OCCUR. DONT FORGET.
-			//find a way to store generated string in pass array then pass str in hash function that will hash it and store in hash array
-			strcpy(passwords[idx],str); //store str in passwords array
-			//hashpass= hashIt(str,strlen(str)); //should take generated password and hash it then store it in hash array
+
+    } else {
+        for (c = 'A'; c <= 'Z'; ++c) {
+            // add last character to str
+            str[current] = c;
+
+			str[current+1] = '\0';
+			//store str in passwords array
+			strcpy(passwords[idx],str);
+			//should take generated password and hash it then store it in hash array
 			strcpy(hashed[idx],hashIt(str,strlen(str)));
-			printf("%s : %s\n ",passwords[idx],hashed[idx]);
 			idx++;
-			
-			
-            //printf("%s\n", str); //print to test input
+
+
+
         }
     }
 }
@@ -38,21 +48,23 @@ void findHash(char *str, int current, int end) {
 
 int OPC() {
     char str[LENGTH + 1];
-    memset(str, 0, LENGTH + 1); // str is string to fill in, fill it in with zeros first and stop up to 5. since it is 4 characters and a null char.
-    findHash(str, 0, LENGTH); //function that will print out all permutations of all capital letters with length set(4) in our case . store in str value
-	char* userPass = (char*)calloc(hashLength+1, sizeof(char));//prompt user to ask for password
+    memset(str, 0, LENGTH + 1);
+    findHash(str, 0, LENGTH);
+    //allocate mem for password
+	char* userPass = (char*)calloc(hashLength+1, sizeof(char));
+	// found flag so that for loop knows when to stop searching
 	int fflag=0;
+	//prompt user to ask for password
 	printf("Please input hash of password of length 4:");
 	scanf("%s",userPass);
-	for(int i =0; i<MAX;i++){ //compare each value in hash array with stdin
+	for(int i =0; i<MAX;i++){
 		if(strcmp(hashed[i],userPass)==0){
 			printf("Hashed passwords found! Hashed password is %s and unhashed password is %s\n",userPass,passwords[i]); //print both hashed pass and pass
 			fflag=1;
-		}	
+		}
 	}
-	if(fflag ==0){ 
+	if(fflag ==0){
 		printf("Hashed password not found in table!\n");
 	}
-return 0;	
+return 0;
 }
-
