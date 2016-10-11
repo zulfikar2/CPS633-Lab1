@@ -74,7 +74,7 @@ void XorIt(char* in, char* out, int r)
   * @desc Runs the XOR function on indexes of the password.
   * @param char* pass - the password to use XOR function on.
   *	@param int r - the randomly generated number.
-  *@return char* out - f(r, h').
+  * @return char* out - f(r, h').
 */
 char* randomXOR(char* pass, int r)
 {

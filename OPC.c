@@ -11,8 +11,8 @@
 /**
   * @desc creates dictionary of all possible LENGTH-character long passwords made of upper-case letters only
   * @param char* str - the array where the hashed passwords will be temporarily stored
-  *     @param int current - the current index of the array
-  *         @param int end - the last index of the array
+  * @param int current - the current index of the array
+  * @param int end - the last index of the array
 */
 void findHash(char *str, int current, int end) {
 
